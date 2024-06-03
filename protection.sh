@@ -40,6 +40,6 @@ else
 fi
 
 # Clean up current scan files
-rm current_scan current_usb_ports 2>/dev/null
+# rm current_scan current_usb_ports 2>/dev/null
 
 echo "Scan complete. Any differences have been recorded in $warnings_file."
